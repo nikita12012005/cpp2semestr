@@ -1,0 +1,125 @@
+//exercise_1
+#include <iostream>
+#include <string>
+
+class ShopItemOrder {
+private:
+    std::string item_name;
+    double unit_price;
+    int quantity;
+
+public:
+    // Constructor
+    ShopItemOrder(const std::string& name, double price, int qty)
+        : item_name(name), unit_price(price), quantity(qty) {}
+
+    // Getter and setter methods for item name
+    void set_item_name(const std::string& name) {
+        item_name = name;
+    }
+
+    std::string get_item_name() const {
+        return item_name;
+    }
+
+    // Getter and setter methods for unit price
+    void set_unit_price(double price) {
+        unit_price = price;
+    }
+
+    double get_unit_price() const {
+        return unit_price;
+    }
+
+    // Getter and setter methods for quantity
+    void set_quantity(int qty) {
+        quantity = qty;
+    }
+
+    int get_quantity() const {
+        return quantity;
+    }
+
+    // Method to calculate total price
+    double total_price() const {
+        return unit_price * quantity;
+    }
+
+    // Method to print the order
+    void print_order() const {
+        std::cout << "Item: " << item_name << std::endl;
+        std::cout << "Unit Price: $" << unit_price << std::endl;
+        std::cout << "Quantity: " << quantity << std::endl;
+        std::cout << "Total Price: $" << total_price() << std::endl;
+    }
+};
+
+int main() {
+    // Create an item order
+    ShopItemOrder order("Laptop", 999.99, 2);
+
+    // Print the order details
+    order.print_order();
+
+    return 0;
+}
+
+//exercise_2
+#include <iostream>
+#include <string>
+
+class Flight {
+private:
+    std::string id;
+    int capacity;
+    int reserved;
+
+public:
+    // Constructor
+    Flight(const std::string& flight_id, int flight_capacity)
+        : id(flight_id), capacity(flight_capacity), reserved(0) {}
+
+    // Getter method for flight ID
+    std::string get_id() const {
+        return id;
+    }
+
+    // Getter method for flight capacity
+    int get_capacity() const {
+        return capacity;
+    }
+
+    // Getter method for number of reserved seats
+    int get_reserved() const {
+        return reserved;
+    }
+
+    // Method to reserve seats
+    void reserve_seats(int num_seats) {
+        reserved += num_seats;
+    }
+
+    // Method to calculate percentage of capacity filled
+    double percentage_filled() const {
+        return static_cast<double>(reserved) / capacity * 100;
+    }
+
+    // Method to print status report
+    void print_status_report() const {
+        std::cout << "Flight " << id << " : " << reserved << "/" << capacity 
+                  << " (" << percentage_filled() << "%) seats taken" << std::endl;
+    }
+};
+
+int main() {
+    // Create a flight
+    Flight flight1("ABC123", 200);
+
+    // Reserve some seats
+    flight1.reserve_seats(50);
+
+    // Print status report
+    flight1.print_status_report();
+
+    return 0;
+}
