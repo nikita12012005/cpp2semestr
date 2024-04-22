@@ -1,1 +1,107 @@
+//exercise_1
+#include <iostream>
+#include <map>
+#include <sstream>
 
+// Function to replace placeholders in the template string
+std::string replacePlaceholders(const std::map<std::string, std::string>& values, const std::string& templateStr) {
+    std::string result = templateStr;
+
+    for (const auto& pair : values) {
+        std::string placeholder = "[" + pair.first + "]";
+        size_t pos = result.find(placeholder);
+        while (pos != std::string::npos) {
+            result.replace(pos, placeholder.length(), pair.second);
+            pos = result.find(placeholder, pos + pair.second.length());
+        }
+    }
+
+    return result;
+}
+
+int main() {
+    std::string pairsLine, templateLine;
+    std::map<std::string, std::string> values;
+
+    // Read name-value pairs
+    std::getline(std::cin, pairsLine);
+
+    // Parse name-value pairs
+    std::istringstream iss(pairsLine);
+    std::string pair;
+    while (std::getline(iss, pair, ',')) {
+        size_t pos = pair.find('=');
+        if (pos != std::string::npos) {
+            std::string name = pair.substr(0, pos);
+            std::string value = pair.substr(pos + 1);
+            values[name] = value;
+        }
+    }
+
+    // Read the template string
+    std::getline(std::cin, templateLine);
+
+    // Replace placeholders in the template string and print the result
+    std::string result = replacePlaceholders(values, templateLine);
+    std::cout << result << std::endl;
+
+    return 0;
+}
+
+//exercise_2
+#include <iostream>
+#include <string>
+#include <cctype>
+
+bool isValidPassword(const std::string& password) {
+    bool hasUpperCase = false;
+    bool hasLowerCase = false;
+    bool hasDigit = false;
+    bool hasSpecialChar = false;
+
+    if (password.length() < 8) {
+        std::cout << "Password must be at least eight characters long." << std::endl;
+        return false;
+    }
+
+    for (char ch : password) {
+        if (std::isupper(ch)) {
+            hasUpperCase = true;
+        } else if (std::islower(ch)) {
+            hasLowerCase = true;
+        } else if (std::isdigit(ch)) {
+            hasDigit = true;
+        } else if (std::ispunct(ch)) {
+            hasSpecialChar = true;
+        }
+    }
+
+    if (!hasUpperCase) {
+        std::cout << "Password must contain at least one upper-case letter." << std::endl;
+    }
+    if (!hasLowerCase) {
+        std::cout << "Password must contain at least one lower-case letter." << std::endl;
+    }
+    if (!hasDigit) {
+        std::cout << "Password must contain at least one digit." << std::endl;
+    }
+    if (!hasSpecialChar) {
+        std::cout << "Password must contain at least one special character." << std::endl;
+    }
+
+    return hasUpperCase && hasLowerCase && hasDigit && hasSpecialChar;
+}
+
+int main() {
+    std::string password;
+    std::cout << "Enter your password: ";
+    std::getline(std::cin, password);
+
+    if (isValidPassword(password)) {
+        std::cout << "Password is valid." << std::endl;
+    } else {
+        std::cout << "Password is not valid." << std::endl;
+    }
+
+    return 0;
+}
