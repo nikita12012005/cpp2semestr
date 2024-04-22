@@ -1,0 +1,235 @@
+//exercise_1
+#include <iostream>
+#include <string>
+
+class Flight {
+private:
+    std::string id;
+    int capacity;
+    int reserved;
+
+public:
+    // Constructor
+    Flight(const std::string& flight_id, int flight_capacity)
+        : id(flight_id), capacity(flight_capacity), reserved(0) {
+        if (capacity < 0) {
+            capacity = 0;
+        }
+    }
+
+    // Getter methods
+    std::string get_id() const {
+        return id;
+    }
+
+    int get_capacity() const {
+        return capacity;
+    }
+
+    int get_reserved() const {
+        return reserved;
+    }
+
+    // Method to reserve seats
+    bool reserve_seats(int num_seats) {
+        int total_seats = reserved + num_seats;
+        if (total_seats <= capacity * 1.05 && num_seats >= 0) {
+            reserved = total_seats;
+            return true;
+        }
+        return false;
+    }
+
+    // Method to cancel reservations
+    bool cancel_seats(int num_seats) {
+        int total_seats = reserved - num_seats;
+        if (total_seats >= 0 && num_seats >= 0) {
+            reserved = total_seats;
+            return true;
+        }
+        return false;
+    }
+
+    // Method to calculate percentage of capacity filled
+    double percentage_filled() const {
+        return static_cast<double>(reserved) / capacity * 100;
+    }
+
+    // Method to print status report
+    void print_status_report() const {
+        std::cout << "Flight " << id << " : " << reserved << "/" << capacity 
+                  << " (" << percentage_filled() << "%) seats taken" << std::endl;
+    }
+};
+
+int main() {
+    // Create a flight
+    Flight flight1("ABC123", 200);
+
+    // Reserve some seats
+    flight1.reserve_seats(150);
+
+    // Print status report
+    flight1.print_status_report();
+
+    // Try adding more reservations
+    if (!flight1.reserve_seats(10)) {
+        std::cout << "Cannot perform this operation" << std::endl;
+    }
+
+    // Cancel some reservations
+    if (!flight1.cancel_seats(20)) {
+        std::cout << "Cannot perform this operation" << std::endl;
+    }
+
+    // Print status report again
+    flight1.print_status_report();
+
+    return 0;
+}
+
+//exercise_2
+#include <iostream>
+#include <vector>
+#include <string>
+
+class Flight {
+private:
+    std::string id;
+    int capacity;
+    int reserved;
+
+public:
+    // Constructor
+    Flight(const std::string& flight_id, int flight_capacity)
+        : id(flight_id), capacity(flight_capacity), reserved(0) {
+        if (capacity < 0) {
+            capacity = 0;
+        }
+    }
+
+    // Getter methods
+    std::string get_id() const {
+        return id;
+    }
+
+    int get_capacity() const {
+        return capacity;
+    }
+
+    int get_reserved() const {
+        return reserved;
+    }
+
+    // Method to reserve seats
+    bool reserve_seats(int num_seats) {
+        int total_seats = reserved + num_seats;
+        if (total_seats <= capacity * 1.05 && num_seats >= 0) {
+            reserved = total_seats;
+            return true;
+        }
+        return false;
+    }
+
+    // Method to cancel reservations
+    bool cancel_seats(int num_seats) {
+        int total_seats = reserved - num_seats;
+        if (total_seats >= 0 && num_seats >= 0) {
+            reserved = total_seats;
+            return true;
+        }
+        return false;
+    }
+
+    // Method to calculate percentage of capacity filled
+    double percentage_filled() const {
+        return static_cast<double>(reserved) / capacity * 100;
+    }
+
+    // Method to print status report
+    void print_status_report() const {
+        std::cout << "Flight " << id << " : " << reserved << "/" << capacity 
+                  << " (" << percentage_filled() << "%) seats taken" << std::endl;
+    }
+};
+
+class FlightManager {
+private:
+    std::vector<Flight> flights;
+
+public:
+    // Method to create a new flight
+    bool create_flight(const std::string& flight_id, int capacity) {
+        if (flights.size() >= 10 || capacity <= 0) {
+            return false;
+        }
+        for (const Flight& flight : flights) {
+            if (flight.get_id() == flight_id) {
+                return false; // Flight ID already exists
+            }
+        }
+        flights.push_back(Flight(flight_id, capacity));
+        return true;
+    }
+
+    // Method to delete a flight
+    bool delete_flight(const std::string& flight_id) {
+        for (auto it = flights.begin(); it != flights.end(); ++it) {
+            if (it->get_id() == flight_id) {
+                flights.erase(it);
+                return true;
+            }
+        }
+        return false; // Flight ID not found
+    }
+
+    // Method to add reservations to a flight
+    bool add_reservations(const std::string& flight_id, int num_seats) {
+        for (Flight& flight : flights) {
+            if (flight.get_id() == flight_id) {
+                return flight.reserve_seats(num_seats);
+            }
+        }
+        return false; // Flight ID not found
+    }
+
+    // Method to cancel reservations from a flight
+    bool cancel_reservations(const std::string& flight_id, int num_seats) {
+        for (Flight& flight : flights) {
+            if (flight.get_id() == flight_id) {
+                return flight.cancel_seats(num_seats);
+            }
+        }
+        return false; // Flight ID not found
+    }
+
+    // Method to print status report for all flights
+    void print_status_report_all() const {
+        for (const Flight& flight : flights) {
+            flight.print_status_report();
+        }
+    }
+};
+
+int main() {
+    FlightManager manager;
+
+    // Create flights
+    manager.create_flight("ABC123", 200);
+    manager.create_flight("XYZ789", 150);
+
+    // Add reservations
+    manager.add_reservations("ABC123", 100);
+    manager.add_reservations("XYZ789", 80);
+
+    // Print status report
+    manager.print_status_report_all();
+
+    // Cancel reservations
+    manager.cancel_reservations("ABC123", 50);
+
+    // Print status report again
+    manager.print_status_report_all();
+
+    return 0;
+}
