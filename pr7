@@ -1,0 +1,144 @@
+//exercise_1
+#include <iostream>
+#include <string>
+
+class Person {
+public:
+    std::string name;
+    int age;
+    double height;
+
+    // Constructor
+    Person(const std::string& n, int a, double h) : name(n), age(a), height(h) {}
+
+    // Method to introduce the person
+    void introduce() {
+        std::cout << "Hello, my name is " << name << ", I am " << age << " years old, and I am " << height << " meters tall." << std::endl;
+    }
+};
+
+int main() {
+    // Create a Person object
+    Person person1("John", 30, 1.75);
+
+    // Access and modify member variables
+    person1.age = 35;
+    person1.height = 1.80;
+
+    // Access member variables directly
+    std::cout << "Name: " << person1.name << std::endl;
+    std::cout << "Age: " << person1.age << std::endl;
+    std::cout << "Height: " << person1.height << std::endl;
+
+    // Call a method of the class
+    person1.introduce();
+
+    return 0;
+}
+
+//exercise_2
+#include <iostream>
+
+class Square {
+private:
+    double side;
+
+public:
+    // Constructor
+    Square(double s) : side(s) {}
+
+    // Setter method for side
+    void set_side(double s) {
+        if (s >= 0) {  // Ignore the change if the argument is less than 0
+            side = s;
+        }
+    }
+
+    // Method to calculate area
+    double area() const {
+        return side * side;
+    }
+
+    // Method to print the area
+    void print_area() const {
+        std::cout << "Area: " << area() << std::endl;
+    }
+};
+
+int main() {
+    Square sq(5.0); // Create a square object with side 5
+
+    // Access and print the area using the public method
+    sq.print_area();
+
+    // Update the side using the public setter method
+    sq.set_side(7.0);
+
+    // Access and print the updated area
+    sq.print_area();
+
+    // Try to set negative side
+    sq.set_side(-3.0);
+
+    // Access and print the area again (should remain unchanged)
+    sq.print_area();
+
+    return 0;
+}
+
+//exercise_3
+#include <iostream>
+
+class Square {
+private:
+    double side;
+    mutable bool side_changed; // Flag to track if side has changed
+    mutable double cached_area; // Cached area value
+
+public:
+    // Constructor
+    Square(double s) : side(s), side_changed(true), cached_area(0.0) {}
+
+    // Setter method for side
+    void set_side(double s) {
+        if (s >= 0) {
+            side = s;
+            side_changed = true; // Mark side as changed
+        }
+    }
+
+    // Getter method for side
+    double get_side() const {
+        return side;
+    }
+
+    // Getter method for area
+    double area() const {
+        if (side_changed) {
+            cached_area = side * side;
+            side_changed = false; // Reset side changed flag
+        }
+        return cached_area;
+    }
+};
+
+int main() {
+    Square sq(5.0); // Create a square object with side 5
+
+    // Access and print the side using the getter method
+    std::cout << "Initial Side: " << sq.get_side() << std::endl;
+
+    // Access and print the area using the getter method
+    std::cout << "Initial Area: " << sq.area() << std::endl;
+
+    // Update the side using the setter method
+    sq.set_side(7.0);
+
+    // Access and print the updated side using the getter method
+    std::cout << "Updated Side: " << sq.get_side() << std::endl;
+
+    // Access and print the updated area using the getter method
+    std::cout << "Updated Area: " << sq.area() << std::endl;
+
+    return 0;
+}
