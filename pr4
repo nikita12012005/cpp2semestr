@@ -1,0 +1,74 @@
+//exercise_1
+#include <iostream>
+
+bool isLeap(int year) {
+    // Якщо рік кратний 4
+    if (year % 4 == 0) {
+        // Якщо рік кратний 100, але не кратний 400
+        if (year % 100 == 0 && year % 400 != 0) {
+            return false;
+        } else {
+            return true;
+        }
+    } else {
+        return false;
+    }
+}
+
+int main() {
+    for(int yr = 1995; yr < 2017; yr++) {
+        std::cout << yr << " -> " << isLeap(yr) << std::endl;
+    }
+    return 0;
+}
+
+//exercise_2
+#include <iostream>
+#include <vector>
+
+bool isLeap(int year) {
+    // Код, який ви вже вставили
+}
+
+int monthLength(int year, int month) {
+    std::vector<int> daysInMonth = {31, isLeap(year) ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    return daysInMonth[month - 1];
+}
+
+int main() {
+    for(int yr = 2000; yr < 2002; yr++) {
+        for(int mo = 1; mo <= 12; mo++) {
+            std::cout << monthLength(yr, mo) << " ";
+        }
+        std::cout << std::endl;
+    }
+    return 0;
+}
+
+//exercise_3
+#include <iostream>
+#include <ctime>
+
+struct Date {
+    int year;
+    int month;
+    int day;
+};
+
+Date today() {
+    time_t t = time(NULL);
+    tm tl = *localtime(&t);
+    Date current_date;
+    current_date.year = tl.tm_year + 1900;
+    current_date.month = tl.tm_mon + 1;
+    current_date.day = tl.tm_mday;
+    return current_date;
+}
+
+int main() {
+    Date current_date = today();
+    std::cout << "Поточна дата: " << current_date.year << "-" << current_date.month << "-" << current_date.day << std::endl;
+    return 0;
+}
+
+
