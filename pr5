@@ -1,0 +1,81 @@
+//exercise_1
+#include <iostream>
+
+bool isPrime(int number) {
+    if (number <= 1) {
+        return false;
+    }
+    for (int i = 2; i * i <= number; i++) {
+        if (number % i == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+int main() {
+    int number;
+    std::cout << "Введіть число для перевірки: ";
+    std::cin >> number;
+
+    if (isPrime(number)) {
+        std::cout << number << " є простим числом" << std::endl;
+    } else {
+        std::cout << number << " не є простим числом" << std::endl;
+    }
+
+    return 0;
+}
+
+//exercise_2
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+bool isPrime(int num) {
+    if (num <= 1) {
+        return false;
+    }
+    for (int i = 2; i <= sqrt(num); i++) {
+        if (num % i == 0) {
+            return false;
+        }
+    }
+    return true;
+}
+
+int main() {
+    for(int i = 0; i <= 21; i++) {
+        if(isPrime(i)) {
+            cout << i << " ";
+        }
+    }
+    cout << endl;
+    return 0;
+}
+
+//exercise_3
+#include <iostream>
+using namespace std;
+
+// Оголошення перевантажених функцій
+void increment(int& var) {
+    var++;
+}
+
+void increment(int& var, int expression) {
+    var += expression;
+}
+
+int main() {
+    int var = 0;
+    for (int i = 0; i < 10; i++) {
+        if (i % 2) {
+            increment(var);
+        } else {
+            increment(var, i);
+        }
+    }
+    cout << var << endl;
+    return 0;
+}
