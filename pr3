@@ -1,0 +1,99 @@
+//exercise_1
+#include <iostream>
+#include <cstdlib> // Для функції rand()
+#include <ctime>   // Для функції time()
+
+int main() {
+    int n; // Кількість елементів в масиві
+    std::cout << "Введіть кількість елементів масиву: ";
+    std::cin >> n;
+
+    // Виділення пам'яті для динамічного масиву
+    double *array = new double[n];
+
+    // Заповнення масиву випадковими значеннями
+    srand(time(nullptr)); // Ініціалізація генератора випадкових чисел
+    for (int i = 0; i < n; ++i) {
+        array[i] = -2 + static_cast<double>(rand()) / RAND_MAX * 4; // Генерація випадкового числа з діапазону (-2, 2)
+    }
+
+    // Знаходження кількості додатних та від'ємних чисел
+    int positive_count = 0, negative_count = 0;
+    for (int i = 0; i < n; ++i) {
+        if (array[i] > 0) {
+            ++positive_count;
+        } else if (array[i] < 0) {
+            ++negative_count;
+        }
+    }
+
+    // Виведення результатів
+    std::cout << "Кількість додатних чисел: " << positive_count << std::endl;
+    std::cout << "Кількість від'ємних чисел: " << negative_count << std::endl;
+
+    // Звільнення пам'яті, виділеної для динамічного масиву
+    delete[] array;
+
+    return 0;
+}
+
+//exercise_2
+#include <iostream>
+#include <cstdlib> // Для функції rand()
+#include <ctime>   // Для функції time()
+
+int main() {
+    int n = 3; // Розмірність двовимірного масиву (3x3)
+
+    // Виділення пам'яті для двовимірного динамічного масиву
+    int **matrix = new int*[n];
+    for (int i = 0; i < n; ++i) {
+        matrix[i] = new int[n];
+    }
+
+    // Заповнення масиву випадковими значеннями
+    srand(time(nullptr)); // Ініціалізація генератора випадкових чисел
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            matrix[i][j] = rand() % 10; // Генерація випадкового цілого числа в діапазоні [0, 9]
+        }
+    }
+
+    // Виведення елементів, що знаходяться на головній діагоналі
+    std::cout << "Елементи головної діагоналі: ";
+    for (int i = 0; i < n; ++i) {
+        std::cout << matrix[i][i] << " ";
+    }
+    std::cout << std::endl;
+
+    // Виведення елементів, що знаходяться на побічній діагоналі
+    std::cout << "Елементи побічної діагоналі: ";
+    for (int i = 0; i < n; ++i) {
+        std::cout << matrix[i][n - i - 1] << " ";
+    }
+    std::cout << std::endl;
+
+    // Обчислення кількості парних та непарних елементів масиву
+    int even_count = 0, odd_count = 0;
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            if (matrix[i][j] % 2 == 0) {
+                ++even_count;
+            } else {
+                ++odd_count;
+            }
+        }
+    }
+
+    // Виведення кількості парних та непарних елементів масиву
+    std::cout << "Кількість парних елементів: " << even_count << std::endl;
+    std::cout << "Кількість непарних елементів: " << odd_count << std::endl;
+
+    // Звільнення пам'яті, виділеної для двовимірного динамічного масиву
+    for (int i = 0; i < n; ++i) {
+        delete[] matrix[i];
+    }
+    delete[] matrix;
+
+    return 0;
+}
